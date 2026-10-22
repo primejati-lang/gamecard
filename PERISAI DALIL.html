@@ -1,0 +1,730 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>PERISAI DALIL</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: meja pertempuran. Kartu Situasi (musuh) di kiri, tiga Kartu Dalil sebagai tangan di kanan, panel jawaban di bawahnya. */
+:root{
+  --f950:#04201a; --f900:#072a20; --f800:#0c3a2c; --f700:#12503a; --f600:#1b6a4c;
+  --gold:#d9ad4b; --gold-hi:#f4d983; --gold-lo:#8f6b1f;
+  --cream:#f6eed9; --ink:#10281f; --mute:#b4c6b9;
+  --ember:#d0613f; --ember-lo:#7d2f1c; --jade:#63d3a0;
+  --display:'Cinzel','Trajan Pro','Times New Roman',serif;
+  --body:'Plus Jakarta Sans','Segoe UI',system-ui,-apple-system,sans-serif;
+  --arab:'Amiri','Scheherazade New','Traditional Arabic',serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+h1,h2,h3,p,ul,ol{margin:0}
+button,textarea{font:inherit;color:inherit}
+body{
+  margin:0;min-height:100%;
+  padding-block:20px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:
+    radial-gradient(1100px 560px at 15% -8%,#16603f66,transparent 62%),
+    radial-gradient(900px 520px at 100% 100%,#0e45336e,transparent 60%),
+    var(--f950);
+  color:var(--cream);font:15px/1.55 var(--body);
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'%3E%3Cg fill='none' stroke='%23d9ad4b' stroke-opacity='.09' stroke-width='1'%3E%3Crect x='22' y='22' width='44' height='44'/%3E%3Crect x='22' y='22' width='44' height='44' transform='rotate(45 44 44)'/%3E%3Ccircle cx='44' cy='44' r='9'/%3E%3C/g%3E%3C/svg%3E");
+}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto}
+.screen{animation:fade .5s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+:focus-visible{outline:3px solid var(--gold-hi);outline-offset:3px}
+
+/* Tombol */
+.btn{
+  appearance:none;border:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:15px 30px;border-radius:12px;
+  font:800 15px var(--display);letter-spacing:.1em;text-transform:uppercase;color:#2b1e05;
+  background:linear-gradient(180deg,var(--gold-hi),var(--gold) 55%,#b88a2b);
+  box-shadow:0 5px 0 var(--gold-lo),0 16px 30px #0009;
+  transition:transform .15s,box-shadow .15s,filter .2s;
+}
+.btn:hover{filter:brightness(1.07);transform:translateY(-2px);box-shadow:0 7px 0 var(--gold-lo),0 20px 34px #000a}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--gold-lo),0 6px 14px #0009}
+.btn.ghost{background:transparent;color:var(--gold-hi);box-shadow:inset 0 0 0 2px var(--gold)}
+.btn svg{flex:none}
+
+/* Layar awal */
+.start{display:grid;gap:36px;align-items:center;padding-block:26px 10px}
+@media(min-width:920px){.start{grid-template-columns:1.1fr .9fr}}
+.eyebrow{display:flex;align-items:center;gap:12px;font:700 12px var(--body);letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+.eyebrow::before{content:"";width:34px;height:2px;background:var(--gold)}
+.title{
+  margin:14px 0 18px;font-family:var(--display);font-weight:900;
+  font-size:clamp(46px,10.5vw,110px);line-height:.92;letter-spacing:.02em;
+  color:var(--gold);
+  background:linear-gradient(180deg,var(--gold-hi),var(--gold) 55%,var(--gold-lo));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 6px 22px #d9ad4b33);
+}
+.lead{max-width:46ch;color:var(--mute);font-size:17px}
+.steps{display:grid;gap:14px;margin:28px 0;padding:0;list-style:none;max-width:540px}
+.steps li{display:grid;grid-template-columns:38px 1fr;gap:14px;align-items:start}
+.steps .n{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--gold);display:grid;place-items:center;font:700 15px var(--display);color:var(--gold)}
+.steps b{display:block;color:var(--cream)}
+.steps .d{color:var(--mute);font-size:14px}
+.rules{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:30px}
+.rules span{padding:7px 14px;border-radius:99px;border:1px solid #d9ad4b55;background:#06231a99;font-size:13px;color:var(--cream)}
+.rules b{color:var(--gold-hi)}
+.note{margin-top:18px;font-size:12.5px;color:#8fa699;max-width:52ch}
+.fan{display:flex;justify-content:center;align-items:center;padding:30px 14px;min-height:340px}
+.mini{
+  --r:0deg;position:relative;width:clamp(112px,25vw,170px);aspect-ratio:3/4.3;margin-inline:-16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:12px 8px;text-align:center;
+  border:3px solid var(--gold);border-radius:16px;color:var(--ink);
+  background:linear-gradient(165deg,#fcf6e6,#eee2c2);
+  box-shadow:inset 0 0 0 4px #fcf6e6,inset 0 0 0 5.5px #c9a653aa,0 18px 36px #000a;
+  transform:rotate(var(--r));animation:float 5s ease-in-out infinite;
+}
+.mini:nth-child(1){--r:-9deg;animation-delay:-1s}
+.mini:nth-child(2){--r:0deg;z-index:2;translate:0 -18px}
+.mini:nth-child(3){--r:9deg;animation-delay:-2.4s}
+@keyframes float{0%,100%{transform:rotate(var(--r)) translateY(0)}50%{transform:rotate(var(--r)) translateY(-8px)}}
+.mini .nm{font:700 14px/1.15 var(--display);color:var(--f800)}
+.mini .rf{font:700 11px var(--body);color:var(--f700)}
+.medal{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,var(--f600),var(--f900));color:var(--gold-hi);box-shadow:0 0 0 3px var(--gold),0 0 0 5px #fcf6e6,0 6px 14px #0005;flex:none}
+
+/* HUD */
+.hud{
+  display:flex;align-items:center;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;
+  padding:12px 18px;margin-bottom:22px;border:1px solid #d9ad4b3a;border-radius:16px;background:#06231acc;
+}
+.brand{font:900 16px var(--display);letter-spacing:.16em;color:var(--gold)}
+.rounds{display:flex;align-items:center;gap:14px}
+.rtxt{font:700 12px var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.pips{display:flex;gap:6px}
+.pip svg{width:30px;height:30px;display:block;overflow:visible}
+.pip path.sh{fill:none;stroke:#ffffff38;stroke-width:1.6;stroke-linejoin:round}
+.pip .crack{display:none;stroke:#ffb9a3;stroke-width:1.6;fill:none;stroke-linecap:round}
+.pip.now path.sh{stroke:var(--gold);fill:#d9ad4b26;animation:pulse 1.6s ease-in-out infinite}
+.pip.win path.sh{stroke:var(--gold-hi);fill:var(--gold)}
+.pip.lose path.sh{stroke:var(--ember);fill:var(--ember-lo)}
+.pip.lose .crack{display:block}
+@keyframes pulse{50%{filter:drop-shadow(0 0 7px #f4d983)}}
+.scorebox{display:flex;align-items:baseline;gap:8px}
+.scorebox .lab{font:700 12px var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+#score{font:900 36px/1 var(--display);color:var(--gold-hi);font-variant-numeric:tabular-nums}
+.scorebox small{color:var(--mute);font-size:13px}
+
+/* Arena */
+.arena{display:grid;gap:26px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:1100px){.arena{grid-template-columns:330px minmax(0,1fr)}}
+.right{display:grid;gap:20px;min-width:0}
+.sec{display:flex;align-items:center;gap:12px;font:700 12px var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.sec::after{content:"";flex:1;height:1px;background:#d9ad4b44}
+
+/* Kartu Situasi */
+.sit{
+  position:relative;display:flex;flex-direction:column;gap:14px;align-self:start;padding:22px;border-radius:20px;overflow:hidden;
+  background:linear-gradient(170deg,#133b2e,#0a241b);border:2px solid #d0613f88;
+  box-shadow:0 20px 50px #0009,inset 0 0 70px #d0613f14;animation:deal .6s cubic-bezier(.2,.8,.2,1) backwards;
+}
+@media(min-width:1100px){.sit{position:sticky;top:16px}}
+.sit-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ribbon{font:700 11px var(--body);letter-spacing:.2em;text-transform:uppercase;color:#ffb9a3}
+.chip{font:700 10.5px var(--body);letter-spacing:.12em;text-transform:uppercase;background:var(--f800);color:var(--gold-hi);padding:4px 10px;border-radius:99px;white-space:nowrap}
+.sit .chip{background:#d0613f2e;color:#ffcdb9}
+.sit-id{display:flex;gap:14px;align-items:center}
+.sit .medal{background:radial-gradient(circle at 30% 25%,#e1805f,#6e2a18);color:#ffe6da;box-shadow:0 0 0 3px var(--ember),0 0 0 5px #0a241b,0 6px 14px #0006}
+.sit h2{font:700 24px/1.1 var(--display);color:var(--cream)}
+.attack{color:#ffb9a3;font-weight:600;font-size:13px}
+.scn{font-size:16px;line-height:1.65;color:var(--cream)}
+.hp{display:grid;gap:7px}
+.hp-lab{display:flex;justify-content:space-between;font:600 11.5px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.hp-bar{height:12px;border-radius:99px;background:#0007;overflow:hidden;border:1px solid #ffffff22}
+.hp-fill{height:100%;width:100%;background:linear-gradient(90deg,#8f2f19,var(--ember),#f0916f);transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.stamp{
+  position:absolute;right:18px;bottom:70px;padding:6px 14px;border:3px solid var(--jade);border-radius:8px;color:var(--jade);
+  font:900 20px var(--display);letter-spacing:.1em;background:#06231ad9;opacity:0;transform:rotate(-10deg) scale(1.7);transition:opacity .35s,transform .35s cubic-bezier(.2,.9,.3,1.4);pointer-events:none;
+}
+.stamp.bad{border-color:var(--ember);color:#ffb9a3}
+.sit.over .stamp{opacity:1;transform:rotate(-10deg) scale(1)}
+.sit.won{border-color:#63d3a099;box-shadow:0 20px 50px #0009,0 0 40px #63d3a02e}
+.sit.won .scn,.sit.won h2{opacity:.6}
+
+/* Kartu Dalil */
+.hand{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:720px){.hand{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@keyframes deal{from{opacity:0;transform:translateY(40px) rotate(-4deg) scale(.94)}to{opacity:1;transform:none}}
+.dcard{
+  position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;
+  padding:16px 14px 0;cursor:pointer;overflow:hidden;
+  border:3px solid var(--gold);border-radius:18px;color:var(--ink);
+  background:linear-gradient(165deg,#fcf6e6,#eee2c2);
+  box-shadow:inset 0 0 0 5px #fcf6e6,inset 0 0 0 6.5px #c9a653aa,0 14px 30px #0007;
+  transition:transform .25s,box-shadow .25s,opacity .3s,filter .3s;
+  animation:deal .6s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:var(--d,0ms);
+}
+.dcard:hover:not(:disabled){transform:translateY(-6px)}
+.dcard.sel{transform:translateY(-10px);box-shadow:inset 0 0 0 5px #fcf6e6,inset 0 0 0 6.5px #c9a653aa,0 0 0 3px var(--gold-hi),0 0 46px #f4d98380,0 18px 36px #000a}
+.dcard:disabled{cursor:default}
+.dcard.best{box-shadow:inset 0 0 0 5px #fcf6e6,inset 0 0 0 6.5px #c9a653aa,0 0 0 3px var(--jade),0 0 44px #63d3a06e,0 14px 30px #0007}
+.dcard.wrong{box-shadow:inset 0 0 0 5px #fcf6e6,inset 0 0 0 6.5px #c9a653aa,0 0 0 3px var(--ember),0 0 40px #d0613f66,0 14px 30px #0007}
+.dcard.dim{opacity:.5;filter:saturate(.55)}
+.dc-top{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%}
+.dcard .chip{padding:4px 9px}
+.dc-type{font:700 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:#6b5a2b}
+.dcard[data-tag] .dc-type{visibility:hidden}
+.dcard[data-tag]::before{
+  content:attr(data-tag);position:absolute;top:14px;right:16px;padding:3px 9px;border-radius:99px;
+  font:800 10px var(--body);letter-spacing:.1em;text-transform:uppercase;background:var(--gold);color:#2b1e05;
+}
+.dcard.best::before{background:var(--jade)}
+.dcard.wrong::before{background:var(--ember);color:#fff}
+.dc-name{font:700 17px/1.15 var(--display);color:var(--f800);letter-spacing:.02em}
+.dc-ar{display:block;width:100%;padding:2px 4px;border-block:1px solid #b89a4a66;font:400 25px/1.95 var(--arab);color:var(--ink)}
+.dc-tr{font-size:12.5px;line-height:1.55;font-style:italic;color:#33473d}
+.dc-ref{font:700 12.5px var(--body);color:var(--f700)}
+.dc-ref em{font-weight:500;color:#6b5a2b}
+.dc-fx{
+  margin-top:auto;width:calc(100% + 28px);margin-inline:-14px;padding:10px 14px 12px;
+  background:linear-gradient(180deg,var(--f700),var(--f900));color:var(--cream);font-size:12px;line-height:1.45;
+}
+.dc-fx b{display:block;font:700 11.5px var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--gold-hi)}
+
+/* Jawaban */
+.answer{display:grid;gap:12px;padding:18px;border-radius:18px;border:1px solid #d9ad4b44;background:linear-gradient(180deg,#0d3a2c,#09271e)}
+.answer label{font-weight:700}
+textarea{
+  width:100%;min-height:112px;resize:vertical;padding:14px;border-radius:12px;border:1.5px solid #ffffff26;background:#06231a;color:var(--cream);line-height:1.55;
+}
+textarea::placeholder{color:#7f9a8b}
+textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px #d9ad4b33}
+textarea:disabled{opacity:.7}
+.row{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.pickline{font-size:13px;color:var(--mute)}
+.pickline b{color:var(--gold-hi)}
+.hint{min-height:20px;font-size:13px;color:#ffb9a3}
+
+/* Hasil ronde */
+.result{display:grid;gap:16px;padding:20px;border-radius:18px;border:1px solid;scroll-margin-top:12px;animation:fade .5s both}
+.result.win{background:linear-gradient(180deg,#0f4a36,#0a2c21);border-color:#63d3a077}
+.result.lose{background:linear-gradient(180deg,#3d1e16,#1f130e);border-color:#d0613f88}
+.res-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.res-title{font:900 clamp(22px,4vw,32px)/1.1 var(--display);letter-spacing:.04em;color:var(--gold-hi)}
+.result.lose .res-title{color:#ffb9a3}
+.res-sub{color:var(--mute);font-size:14px;margin-top:4px}
+.pts{font:900 40px/1 var(--display);color:var(--gold-hi);font-variant-numeric:tabular-nums}
+.result.lose .pts{color:#ffb9a3}
+.pts small{font-size:14px;color:var(--mute);font-family:var(--body);font-weight:600}
+.rows{display:grid;gap:8px}
+.prow{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;border-radius:10px;background:#0000003a;font-size:14px}
+.prow .v{font-weight:800;font-variant-numeric:tabular-nums}
+.prow.on .v{color:var(--jade)}
+.prow.off .v{color:var(--mute)}
+.blk h3{margin-bottom:6px;font:700 11.5px var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.blk p{max-width:70ch}
+.quote{padding:11px 15px;border-left:3px solid var(--gold);border-radius:0 10px 10px 0;background:#00000033;font-style:italic}
+.mine{padding:11px 15px;border-radius:10px;background:#0000002b;color:var(--mute);font-size:14px;overflow-wrap:anywhere}
+.fix{padding:12px 15px;border-radius:10px;background:#d0613f22;border:1px solid #d0613f66;color:#ffdccf}
+.kw{display:flex;flex-wrap:wrap;gap:8px}
+.kw span{padding:4px 11px;border-radius:99px;font-size:12.5px;border:1px solid #ffffff33;color:var(--mute)}
+.kw .hit{border-color:var(--jade);color:var(--jade);background:#63d3a014}
+.kwlab{font-size:12.5px;color:var(--mute);margin:2px 0 6px}
+
+/* Layar akhir */
+.end{display:grid;gap:30px;padding-block:14px}
+@media(min-width:920px){.end{grid-template-columns:380px minmax(0,1fr);align-items:start}}
+.end-card{display:grid;gap:18px;justify-items:center;text-align:center;padding:30px 22px;border-radius:22px;border:2px solid #d9ad4b66;background:linear-gradient(170deg,#10473a,#08261d);box-shadow:0 24px 60px #000a}
+.ring{--p:0;position:relative;width:min(240px,70vw);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--gold-hi) calc(var(--p)*1%),#ffffff16 0)}
+.ring::before{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--f900)}
+.ring>div{position:relative}
+.big{font:900 66px/1 var(--display);color:var(--gold-hi);font-variant-numeric:tabular-nums}
+.of{color:var(--mute);font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.rank{font:900 clamp(24px,4.6vw,34px)/1.1 var(--display);letter-spacing:.04em;color:var(--gold)}
+.stats{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.stats span{padding:6px 14px;border-radius:99px;background:#06231a;border:1px solid #d9ad4b44;font-size:13px}
+.stats b{color:var(--gold-hi)}
+.evalbox{display:grid;gap:8px;padding:18px 20px;border-radius:16px;background:#0a2c21;border:1px solid #ffffff17;margin-bottom:16px}
+.evalbox p{max-width:66ch}
+.recap{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.rc{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:14px;align-items:center;padding:13px 15px;border-radius:12px;background:#0a2c21;border:1px solid #ffffff14}
+.rc .st{width:36px;height:36px;border-radius:50%;display:grid;place-items:center}
+.rc.ok .st{background:#63d3a026;color:var(--jade)}
+.rc.no .st{background:#d0613f26;color:#ffb9a3}
+.rc b{display:block}
+.rc small{display:block;color:var(--mute);font-size:12.5px;overflow-wrap:anywhere}
+.rc .p{font:900 20px var(--display);color:var(--gold-hi)}
+
+/* Efek */
+.fx{position:fixed;inset:0;z-index:50;pointer-events:none;overflow:hidden}
+.spark{position:absolute;width:9px;height:9px;border-radius:2px}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+}
+</style>
+
+<div class="wrap">
+
+  <!-- LAYAR AWAL -->
+  <section id="screenStart" class="screen">
+    <div class="start">
+      <div>
+        <div class="eyebrow">Card Battle Strategy · PAI</div>
+        <h1 class="title">PERISAI<br>DALIL</h1>
+        <p class="lead">Situasi sehari-hari datang menyerang. Pilih Kartu Dalil yang tepat, jelaskan penerapannya, dan tangkis serangan dengan Al-Qur'an dan hadis.</p>
+        <ol class="steps">
+          <li><span class="n">1</span><div><b>Hadapi Kartu Situasi</b><span class="d">Satu situasi muncul setiap ronde, total 5 ronde.</span></div></li>
+          <li><span class="n">2</span><div><b>Pilih 1 dari 3 Kartu Dalil</b><span class="d">Ayat atau hadis mana yang paling relevan?</span></div></li>
+          <li><span class="n">3</span><div><b>Tulis penjelasan, lalu Lawan Situasi</b><span class="d">Hubungkan dalil dengan situasi dengan kata-katamu sendiri.</span></div></li>
+        </ol>
+        <div class="rules"><span>Dalil relevan <b>+2</b></span><span>Kata kunci tepat <b>+1</b></span><span>Maksimal <b>15 poin</b></span></div>
+        <button class="btn" type="button" data-act="start">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>
+          Mulai Permainan
+        </button>
+        <p class="note">Jawabanmu diperiksa dengan pencocokan kata kunci sederhana, bukan AI. Teks dalil ditampilkan sebagai penggalan atau ayat lengkap sesuai keterangan pada kartu.</p>
+      </div>
+      <div class="fan" id="fan" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- LAYAR GAME -->
+  <section id="screenGame" class="screen" hidden>
+    <header class="hud">
+      <div class="brand">PERISAI DALIL</div>
+      <div class="rounds">
+        <span class="rtxt" id="roundTxt">Ronde 1 / 5</span>
+        <div class="pips" id="pips" aria-hidden="true"></div>
+      </div>
+      <div class="scorebox"><span class="lab">Skor</span><span id="score">0</span><small>/ 15</small></div>
+    </header>
+    <main class="arena" id="arena"></main>
+  </section>
+
+  <!-- LAYAR AKHIR -->
+  <section id="screenEnd" class="screen" hidden></section>
+
+</div>
+<div class="fx" id="fx" aria-hidden="true"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- Ikon ---------- */
+var ICONS={
+  book:'<path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5c-3.5-.5-6.5 0-8.5 1.5z"/><path d="M12 6.5v13"/>',
+  target:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 12l8-8"/><path d="M16 4h4v4"/>',
+  bowl:'<path d="M3 11h18a9 9 0 0 1-18 0z"/><path d="M8 7c0-1.5 1-1.5 1-3M12 7c0-1.5 1-1.5 1-3M16 7c0-1.5 1-1.5 1-3"/>',
+  seal:'<path d="M4 5h16v11H9l-5 4z"/><path d="M9 9l6 4M15 9l-6 4"/>',
+  rings:'<circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/>',
+  dawn:'<path d="M3 18h18"/><path d="M6 18a6 6 0 0 1 12 0"/><path d="M12 5v4M4.5 9.5L7 12M19.5 9.5L17 12"/>',
+  eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  road:'<path d="M9 21l2-18"/><path d="M15 21l-2-18"/><path d="M12 7v2M12 12v2M12 17v2"/>',
+  shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+  paper:'<path d="M5 3h10l4 4v14H5z"/><path d="M9 12h6M9 16h4"/>',
+  warn:'<path d="M12 3l9 17H3z"/><path d="M12 10v4M12 17.5v.5"/>',
+  rain:'<path d="M7 15a4 4 0 0 1 .5-8 5 5 0 0 1 9.5 1.5A3.5 3.5 0 0 1 17 15z"/><path d="M9 18l-1 3M13 18l-1 3M17 18l-1 3"/>',
+  horn:'<path d="M3 11v3h3l7 4V7L6 11z"/><path d="M17 9a4 4 0 0 1 0 6"/>',
+  person:'<circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/>',
+  bubbles:'<path d="M4 5h11v8H9l-3 3v-3H4z"/><path d="M17 9h3v8h-2v3l-3-3h-4v-2"/>',
+  pin:'<path d="M12 21s-6-6-6-11a6 6 0 0 1 12 0c0 5-6 11-6 11z"/><circle cx="12" cy="10" r="2"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  cross:'<path d="M6 6l12 12M18 6L6 18"/>',
+  swords:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8 11l8 0M12 7v8"/>'
+};
+function ic(n,s){s=s||24;return '<svg viewBox="0 0 24 24" width="'+s+'" height="'+s+'" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[n]+'</svg>';}
+
+/* ---------- Data: Kartu Dalil ---------- */
+var DALIL=[
+ {id:"mujadilah",nama:"Cahaya Ilmu",kat:"Ilmu",jenis:"Ayat",ikon:"book",
+  ar:"يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ",
+  terj:"Allah niscaya akan mengangkat (derajat) orang-orang yang beriman di antaramu dan orang-orang yang diberi ilmu beberapa derajat.",
+  ref:"Q.S. Al-Mujadilah: 11",partial:true,tema:"keutamaan ilmu dan orang yang berilmu",
+  efekN:"Efek Cahaya",efek:"Mengingatkan bahwa ilmu mengangkat derajat."},
+ {id:"najm",nama:"Tombak Ikhtiar",kat:"Usaha",jenis:"Ayat",ikon:"target",
+  ar:"وَأَن لَّيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَىٰ",
+  terj:"Dan bahwa manusia hanya memperoleh apa yang telah diusahakannya.",
+  ref:"Q.S. An-Najm: 39",partial:false,tema:"pentingnya usaha sendiri",
+  efekN:"Efek Ikhtiar",efek:"Hasil lahir dari usaha yang dikerjakan sendiri."},
+ {id:"baqarah",nama:"Penyaring Halal",kat:"Makanan",jenis:"Ayat",ikon:"bowl",
+  ar:"يَا أَيُّهَا النَّاسُ كُلُوا مِمَّا فِي الْأَرْضِ حَلَالًا طَيِّبًا وَلَا تَتَّبِعُوا خُطُوَاتِ الشَّيْطَانِ ۚ إِنَّهُ لَكُمْ عَدُوٌّ مُّبِينٌ",
+  terj:"Wahai manusia! Makanlah dari (makanan) yang halal dan baik yang terdapat di bumi, dan janganlah kamu mengikuti langkah-langkah setan. Sungguh, setan itu musuh yang nyata bagimu.",
+  ref:"Q.S. Al-Baqarah: 168",partial:false,tema:"perintah makan makanan yang halal dan baik",
+  efekN:"Efek Penyaring",efek:"Memilah mana yang halal dan baik."},
+ {id:"hujurat",nama:"Segel Lisan",kat:"Akhlak",jenis:"Ayat",ikon:"seal",
+  ar:"وَلَا يَغْتَب بَّعْضُكُم بَعْضًا ۚ أَيُحِبُّ أَحَدُكُمْ أَن يَأْكُلَ لَحْمَ أَخِيهِ مَيْتًا فَكَرِهْتُمُوهُ",
+  terj:"Dan janganlah ada di antara kamu yang menggunjing sebagian yang lain. Apakah ada di antara kamu yang suka memakan daging saudaranya yang sudah mati? Tentu kamu merasa jijik kepadanya.",
+  ref:"Q.S. Al-Hujurat: 12",partial:true,tema:"larangan menggunjing",
+  efekN:"Efek Segel",efek:"Membungkam gunjingan dan menjaga nama baik."},
+ {id:"maidah",nama:"Tangan Bersama",kat:"Kerja Sama",jenis:"Ayat",ikon:"rings",
+  ar:"وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَىٰ ۖ وَلَا تَعَاوَنُوا عَلَى الْإِثْمِ وَالْعُدْوَانِ",
+  terj:"Dan tolong-menolonglah kamu dalam (mengerjakan) kebajikan dan takwa, dan jangan tolong-menolong dalam berbuat dosa dan permusuhan.",
+  ref:"Q.S. Al-Ma'idah: 2",partial:true,tema:"tolong-menolong dalam kebaikan dan larangan membantu dosa",
+  efekN:"Efek Persatuan",efek:"Kebaikan menguat saat dikerjakan bersama."},
+ {id:"insyirah",nama:"Fajar Harapan",kat:"Ketabahan",jenis:"Ayat",ikon:"dawn",
+  ar:"فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا",
+  terj:"Maka sesungguhnya beserta kesulitan ada kemudahan. Sesungguhnya beserta kesulitan ada kemudahan.",
+  ref:"Q.S. Al-Insyirah: 5–6",partial:false,tema:"kemudahan yang menyertai kesulitan",
+  efekN:"Efek Fajar",efek:"Harapan menyala kembali setelah gagal."},
+ {id:"isra",nama:"Lentera Tabayyun",kat:"Verifikasi",jenis:"Ayat",ikon:"eye",
+  ar:"وَلَا تَقْفُ مَا لَيْسَ لَكَ بِهِ عِلْمٌ ۚ إِنَّ السَّمْعَ وَالْبَصَرَ وَالْفُؤَادَ كُلُّ أُولَٰئِكَ كَانَ عَنْهُ مَسْئُولًا",
+  terj:"Dan janganlah engkau mengikuti sesuatu yang tidak engkau ketahui. Karena pendengaran, penglihatan, dan hati nurani, semua itu akan diminta pertanggungjawabannya.",
+  ref:"Q.S. Al-Isra': 36",partial:false,tema:"larangan mengikuti sesuatu tanpa pengetahuan",
+  efekN:"Efek Lentera",efek:"Memeriksa kebenaran sebelum menyebarkan."},
+ {id:"muslim_ilmu",nama:"Jalan Menuju Surga",kat:"Ilmu",jenis:"Hadis",ikon:"road",
+  ar:"مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ",
+  terj:"Barang siapa menempuh suatu jalan untuk mencari ilmu, Allah memudahkan baginya jalan menuju surga.",
+  ref:"H.R. Muslim (dari Abu Hurairah r.a.)",partial:false,tema:"keutamaan menempuh jalan untuk mencari ilmu",
+  efekN:"Efek Jalan",efek:"Setiap langkah belajar dimudahkan Allah."},
+ {id:"bm",nama:"Perisai Sejahtera",kat:"Akhlak",jenis:"Hadis",ikon:"shield",
+  ar:"الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ",
+  terj:"Seorang Muslim (sejati) adalah orang yang kaum muslimin lainnya selamat dari (gangguan) lisan dan tangannya.",
+  ref:"H.R. Bukhari dan Muslim (dari Abdullah bin 'Amr r.a.)",partial:false,tema:"kewajiban menjaga orang lain dari gangguan lisan dan tangan",
+  efekN:"Efek Perisai",efek:"Orang lain aman dari lisan dan tanganmu."}
+];
+var D={};DALIL.forEach(function(d){D[d.id]=d;});
+
+/* ---------- Data: Kartu Situasi ---------- */
+var SITUASI=[
+ {id:"malas",nama:"Si Rebahan",serang:"Serangan: Rasa Malas",kat:"Ilmu & Semangat",ikon:"moon",
+  teks:"Besok ada ulangan, tetapi kamu lebih tergoda rebahan dan bermain gim. Buku pelajaran belum kamu buka sama sekali.",
+  fokus:"godaan malas padahal menuntut ilmu itu dimuliakan Allah",
+  kunci:["belajar","ilmu","rajin","derajat","menuntut","semangat","tekun"],hint:["belajar","ilmu","derajat"],
+  ok:["mujadilah","muslim_ilmu"],
+  why:{
+   mujadilah:{alasan:"Ayat ini menegaskan bahwa Allah mengangkat derajat orang beriman dan orang berilmu. Belajar adalah cara meraih kemuliaan itu, sehingga rasa malas harus dilawan.",
+     contoh:"Q.S. Al-Mujadilah: 11 menyatakan Allah mengangkat derajat orang yang berilmu. Karena itu aku akan menyingkirkan gim, membuka buku, dan belajar untuk ulangan besok."},
+   muslim_ilmu:{alasan:"Hadis ini menjanjikan kemudahan jalan menuju surga bagi orang yang menempuh jalan mencari ilmu. Belajar untuk ulangan termasuk mencari ilmu.",
+     contoh:"Menurut hadis riwayat Muslim, orang yang menempuh jalan mencari ilmu akan dimudahkan Allah menuju surga. Jadi aku harus rajin belajar dan menunda bermain."}}},
+ {id:"contek",nama:"Bisikan Contekan",serang:"Serangan: Godaan Curang",kat:"Kejujuran",ikon:"paper",
+  teks:"Saat ujian, teman di sebelahmu berbisik mengajak bertukar jawaban. Kamu belum yakin dengan jawabanmu sendiri.",
+  fokus:"godaan menyontek padahal hasil yang baik datang dari usaha sendiri",
+  kunci:["usaha","berusaha","jujur","kejujuran","sendiri","hasil","curang","kerja keras"],hint:["usaha","jujur","hasil sendiri"],
+  ok:["najm"],
+  why:{najm:{alasan:"Ayat ini mengajarkan bahwa manusia memperoleh hasil dari usahanya sendiri. Menyontek mengambil hasil usaha orang lain dan merusak kejujuran.",
+     contoh:"Q.S. An-Najm: 39 mengatakan manusia hanya memperoleh apa yang diusahakannya. Aku menolak menyontek, memakai jawabanku sendiri, dan menerima hasilnya dengan jujur."}}},
+ {id:"bully",nama:"Bayangan Perundung",serang:"Serangan: Ejekan dan Dorongan",kat:"Akhlak Sosial",ikon:"warn",
+  teks:"Di kelas, beberapa siswa mengejek dan mendorong teman yang pendiam sampai ia menangis. Kamu melihat kejadian itu.",
+  fokus:"perundungan yang menyakiti orang lain dengan lisan dan tangan",
+  kunci:["lisan","tangan","menyakiti","aman","menjaga","ejek","hina","korban","bela","melindungi","bully","perundungan","tolong","permusuhan"],hint:["menjaga","lisan dan tangan","membela korban"],
+  ok:["bm","maidah"],
+  why:{
+   bm:{alasan:"Hadis ini menjelaskan bahwa Muslim sejati tidak mengganggu orang lain dengan lisan maupun tangannya. Mengejek dan mendorong jelas melanggar, dan kita wajib menjaga teman agar merasa aman.",
+     contoh:"Hadis riwayat Bukhari dan Muslim menyebut Muslim sejati menjaga orang lain dari lisan dan tangannya. Aku akan menghentikan ejekan itu, membela temanku, dan melapor kepada guru."},
+   maidah:{alasan:"Bagian akhir ayat ini melarang tolong-menolong dalam dosa dan permusuhan. Ikut menertawakan atau diam-diam mendukung perundungan berarti ikut berbuat dosa, sedangkan korban wajib kita tolong dalam kebaikan.",
+     contoh:"Q.S. Al-Ma'idah: 2 melarang kerja sama dalam dosa dan permusuhan. Aku tidak akan ikut mengejek, malah menolong temanku dan melapor kepada guru."}}},
+ {id:"makanan",nama:"Camilan Samar",serang:"Serangan: Keraguan Halal",kat:"Pangan",ikon:"bowl",
+  teks:"Temanmu menawarkan makanan kemasan impor. Tidak ada label halal di bungkusnya dan bahan-bahannya tidak jelas.",
+  fokus:"makanan yang kehalalannya diragukan",
+  kunci:["halal","baik","thayyib","tayyib","label","bahan","periksa","cek","haram","ragu","berhati","selidik"],hint:["halal dan baik","periksa label","bahan"],
+  ok:["baqarah"],
+  why:{baqarah:{alasan:"Ayat ini memerintahkan kita makan yang halal dan baik. Makanan tanpa label halal dan bahan yang jelas perlu diperiksa dulu sebelum dimakan.",
+     contoh:"Q.S. Al-Baqarah: 168 memerintahkan kita makan makanan yang halal dan baik. Aku akan memeriksa label halal dan bahannya dulu, dan menolak jika masih meragukan."}}},
+ {id:"gagal",nama:"Awan Putus Asa",serang:"Serangan: Rasa Gagal",kat:"Ketabahan",ikon:"rain",
+  teks:"Kamu gagal lolos seleksi lomba yang sudah lama kamu persiapkan. Kamu merasa tidak berguna dan ingin berhenti mencoba.",
+  fokus:"putus asa setelah gagal",
+  kunci:["kesulitan","kemudahan","sabar","bangkit","coba lagi","putus asa","harapan","optimis","yakin","doa","berusaha"],hint:["kesulitan","kemudahan","bangkit"],
+  ok:["insyirah","najm"],
+  why:{
+   insyirah:{alasan:"Allah berjanji bahwa bersama kesulitan ada kemudahan, bahkan diulang dua kali. Kegagalan bukan akhir; ia mengajak kita sabar, bangkit, dan mencoba lagi.",
+     contoh:"Q.S. Al-Insyirah: 5–6 menegaskan bahwa bersama kesulitan ada kemudahan. Aku tidak akan putus asa, akan sabar, belajar dari kegagalan, lalu mencoba lagi."},
+   najm:{alasan:"Ayat ini menekankan pentingnya usaha. Kegagalan hari ini tidak menghapus usaha yang sudah dilakukan, dan terus berusaha adalah jalan memperoleh hasil.",
+     contoh:"Q.S. An-Najm: 39 mengajarkan bahwa manusia memperoleh apa yang diusahakannya. Aku akan terus berusaha, memperbaiki persiapan, dan mencoba lagi."}}},
+ {id:"hoaks",nama:"Kabar Kilat",serang:"Serangan: Berita Tak Jelas",kat:"Informasi",ikon:"horn",
+  teks:"Sebuah pesan berantai viral membawa kabar mengejutkan, tanpa sumber yang jelas. Teman-temanmu mendesak kamu meneruskannya ke grup kelas.",
+  fokus:"menyebarkan berita yang belum terverifikasi",
+  kunci:["verifikasi","periksa","cek","sumber","tabayun","tabayyun","kebenaran","bukti","pengetahuan","hoaks","hoax","menyebar","meneruskan","pertanggungjawaban","tanggung jawab"],hint:["periksa sumber","tabayyun","tanggung jawab"],
+  ok:["isra"],
+  why:{isra:{alasan:"Ayat ini melarang mengikuti sesuatu tanpa pengetahuan, karena pendengaran, penglihatan, dan hati akan dimintai pertanggungjawaban. Meneruskan kabar tanpa sumber jelas berarti menyebarkan hal yang belum kita ketahui kebenarannya.",
+     contoh:"Q.S. Al-Isra': 36 melarang mengikuti sesuatu tanpa ilmu. Aku tidak akan meneruskan pesan itu sebelum memeriksa sumbernya dan memastikan kebenarannya."}}},
+ {id:"bantu",nama:"Panggilan Kebaikan",serang:"Ujian: Kepedulian",kat:"Kepedulian",ikon:"person",
+  teks:"Temanmu kesulitan memahami pelajaran dan hampir tidak naik kelas. Kamu punya waktu luang dan memahami materinya dengan baik.",
+  fokus:"kesempatan menolong teman dalam kebaikan",
+  kunci:["tolong","menolong","bantu","kebaikan","kebajikan","takwa","ajar","kerja sama","peduli","berbagi"],hint:["tolong-menolong","kebaikan","mengajari"],
+  ok:["maidah"],
+  why:{maidah:{alasan:"Ayat ini memerintahkan tolong-menolong dalam kebajikan dan takwa. Mengajari teman yang kesulitan adalah kebaikan nyata yang bisa kita lakukan.",
+     contoh:"Q.S. Al-Ma'idah: 2 memerintahkan tolong-menolong dalam kebaikan. Aku akan meluangkan waktu untuk mengajari temanku sampai ia paham."}}},
+ {id:"gosip",nama:"Bisik Gosip",serang:"Serangan: Ajakan Menggunjing",kat:"Akhlak Lisan",ikon:"bubbles",
+  teks:"Saat istirahat, teman-teman mengajakmu membicarakan keburukan teman sekelas yang sedang tidak ada di tempat.",
+  fokus:"ajakan bergosip dan menggunjing orang lain",
+  kunci:["gunjing","ghibah","keburukan","aib","lisan","saudara","daging","jaga","jijik","bangkai"],hint:["menggunjing","lisan","aib saudara"],
+  ok:["hujurat","bm"],
+  why:{
+   hujurat:{alasan:"Ayat ini melarang menggunjing dan mengibaratkannya seperti memakan daging saudara yang sudah mati, sesuatu yang menjijikkan. Membicarakan keburukan teman yang tidak hadir termasuk menggunjing.",
+     contoh:"Q.S. Al-Hujurat: 12 melarang menggunjing, seperti memakan daging saudara sendiri. Aku akan menolak ajakan bergosip dan mengalihkan obrolan ke hal yang baik."},
+   bm:{alasan:"Hadis ini mengingatkan bahwa Muslim sejati menjaga orang lain dari gangguan lisannya. Bergosip merusak nama baik teman, jadi lisan harus dijaga.",
+     contoh:"Hadis riwayat Bukhari dan Muslim menyebut Muslim sejati menjaga orang lain dari lisannya. Aku tidak akan ikut bergosip karena dapat menyakiti temanku."}}},
+ {id:"kajian",nama:"Hujan Gerimis",serang:"Serangan: Alasan Enggan",kat:"Ilmu & Semangat",ikon:"pin",
+  teks:"Ada kajian keagamaan di masjid yang cukup jauh. Hujan gerimis turun dan kamu ingin membatalkan rencana berangkat.",
+  fokus:"enggan menempuh perjalanan untuk mencari ilmu",
+  kunci:["jalan","menempuh","ilmu","surga","dimudahkan","derajat","belajar","semangat","berjuang"],hint:["menempuh jalan","ilmu","surga"],
+  ok:["muslim_ilmu","mujadilah"],
+  why:{
+   muslim_ilmu:{alasan:"Hadis ini menjanjikan kemudahan jalan menuju surga bagi orang yang menempuh jalan mencari ilmu. Berangkat ke kajian walau jauh dan hujan adalah bentuk perjuangan itu.",
+     contoh:"Hadis riwayat Muslim menyatakan Allah memudahkan jalan ke surga bagi orang yang menempuh jalan mencari ilmu. Aku tetap berangkat ke kajian walau hujan gerimis."},
+   mujadilah:{alasan:"Ayat ini menyatakan Allah mengangkat derajat orang beriman dan berilmu. Menghadiri kajian menambah ilmu, sehingga layak diperjuangkan.",
+     contoh:"Q.S. Al-Mujadilah: 11 menyatakan Allah mengangkat derajat orang berilmu. Aku tetap berangkat ke kajian untuk menambah ilmu."}}}
+];
+
+/* ---------- Util ---------- */
+var $=function(s){return document.querySelector(s);};
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function rand(a){return a[Math.floor(Math.random()*a.length)];}
+function norm(s){return ' '+s.toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim()+' ';}
+function show(id){['screenStart','screenGame','screenEnd'].forEach(function(s){$('#'+s).hidden=(s!==id);});window.scrollTo(0,0);}
+
+/* ---------- State ---------- */
+var G=null;
+function newGame(){
+  G={i:0,score:0,pool:shuffle(SITUASI).slice(0,5),log:[],sel:null,done:false,hand:[],right:null};
+}
+
+/* ---------- Render: awal ---------- */
+function renderFan(){
+  var picks=[D.mujadilah,D.hujurat,D.insyirah];
+  $('#fan').innerHTML=picks.map(function(d){
+    return '<div class="mini"><span class="medal">'+ic(d.ikon,28)+'</span><span class="nm">'+d.nama+'</span><span class="rf">'+d.ref.split(' (')[0]+'</span></div>';
+  }).join('');
+}
+
+/* ---------- Render: HUD ---------- */
+function shield(c){
+  return '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="sh" d="M12 2.5l8 3v6.5c0 5-3.4 8.2-8 9.5-4.6-1.3-8-4.5-8-9.5V5.5z"/><path class="crack" d="M12 5l-2 5 3 2.5-2 5"/></svg>';
+}
+function renderHud(){
+  $('#roundTxt').textContent='Ronde '+(G.i+1)+' / 5';
+  $('#pips').innerHTML=G.pool.map(function(_,k){
+    var r=G.log[k],c='';
+    if(r){c=r.ok?'win':'lose';}else if(k===G.i){c='now';}
+    return '<span class="pip '+c+'">'+shield(c)+'</span>';
+  }).join('');
+  $('#score').textContent=G.score;
+}
+function tweenScore(from,to){
+  var el=$('#score');
+  if(reduce){el.textContent=to;return;}
+  var t0=performance.now();
+  (function f(t){var k=Math.min(1,(t-t0)/700);el.textContent=Math.round(from+(to-from)*k);if(k<1){requestAnimationFrame(f);}})(t0);
+}
+
+/* ---------- Render: ronde ---------- */
+function dcard(d,i){
+  return '<button type="button" class="dcard" data-act="pick" data-id="'+d.id+'" aria-pressed="false" style="--d:'+(i*120+150)+'ms">'+
+    '<span class="dc-top"><span class="chip">'+d.kat+'</span><span class="dc-type">'+d.jenis+'</span></span>'+
+    '<span class="medal">'+ic(d.ikon,28)+'</span>'+
+    '<span class="dc-name">'+d.nama+'</span>'+
+    '<span class="dc-ar" lang="ar" dir="rtl">'+d.ar+'</span>'+
+    '<span class="dc-tr">&ldquo;'+d.terj+'&rdquo;</span>'+
+    '<span class="dc-ref">'+d.ref+(d.partial?' <em>(penggalan ayat)</em>':'')+'</span>'+
+    '<span class="dc-fx"><b>'+d.efekN+'</b>'+d.efek+'</span>'+
+  '</button>';
+}
+function renderRound(){
+  var s=G.pool[G.i];
+  G.right=rand(s.ok);
+  var salah=shuffle(DALIL.filter(function(d){return s.ok.indexOf(d.id)<0;})).slice(0,2).map(function(d){return d.id;});
+  G.hand=shuffle([G.right].concat(salah));
+  G.sel=null;G.done=false;
+  renderHud();
+  $('#arena').innerHTML=
+    '<article class="sit" id="sit" aria-label="Kartu Situasi">'+
+      '<div class="sit-top"><span class="ribbon">Kartu Situasi</span><span class="chip">'+s.kat+'</span></div>'+
+      '<div class="sit-id"><span class="medal">'+ic(s.ikon,28)+'</span><div><h2>'+s.nama+'</h2><div class="attack">'+s.serang+'</div></div></div>'+
+      '<p class="scn">'+s.teks+'</p>'+
+      '<div class="hp"><div class="hp-lab"><span>Kekuatan Godaan</span><span id="hpTxt">100%</span></div><div class="hp-bar"><div class="hp-fill" id="hp"></div></div></div>'+
+      '<div class="stamp" id="stamp">Tertangkis</div>'+
+    '</article>'+
+    '<div class="right">'+
+      '<div class="sec">Pilih 1 dari 3 Kartu Dalil</div>'+
+      '<div class="hand" id="hand">'+G.hand.map(function(id,i){return dcard(D[id],i);}).join('')+'</div>'+
+      '<div class="sec">Jelaskan penerapannya</div>'+
+      '<div id="answerWrap"><div class="answer">'+
+        '<label for="ans">Mengapa dalil ini cocok untuk situasi di atas?</label>'+
+        '<textarea id="ans" maxlength="400" placeholder="Contoh: Dalil ini mengingatkan bahwa ... Karena itu aku akan ..."></textarea>'+
+        '<div class="hint" id="hint" role="status" aria-live="polite"></div>'+
+        '<div class="row"><div class="pickline" id="pickline">Belum ada kartu terpilih.</div>'+
+        '<button type="button" class="btn" id="fight" data-act="fight">'+ic('swords',20)+' Lawan Situasi</button></div>'+
+      '</div></div>'+
+    '</div>';
+}
+
+/* ---------- Aksi ---------- */
+function hint(t){var h=$('#hint');if(h){h.textContent=t;}}
+function pickCard(id){
+  if(G.done){return;}
+  G.sel=id;
+  document.querySelectorAll('.dcard').forEach(function(b){
+    var on=b.getAttribute('data-id')===id;
+    b.classList.toggle('sel',on);
+    b.setAttribute('aria-pressed',on?'true':'false');
+    if(on){b.setAttribute('data-tag','Terpilih');}else{b.removeAttribute('data-tag');}
+  });
+  $('#pickline').innerHTML='Kartu terpilih: <b>'+D[id].nama+'</b>';
+  hint('');
+}
+function shake(el){
+  if(reduce||!el||!el.animate){return;}
+  el.animate([{transform:'translateX(0)'},{transform:'translateX(-9px)'},{transform:'translateX(9px)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:420,easing:'ease-out'});
+}
+function burst(el,color,n){
+  if(reduce||!el||!el.animate){return;}
+  var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,fx=$('#fx');
+  for(var i=0;i<n;i++){
+    var p=document.createElement('i');p.className='spark';
+    p.style.left=cx+'px';p.style.top=cy+'px';p.style.background=Array.isArray(color)?rand(color):color;
+    fx.appendChild(p);
+    var a=Math.random()*Math.PI*2,d=70+Math.random()*170;
+    var x=Math.cos(a)*d,y=Math.sin(a)*d-30;
+    (function(p){
+      p.animate([
+        {transform:'translate(-50%,-50%) rotate(0deg) scale(1)',opacity:1},
+        {transform:'translate(calc(-50% + '+x+'px),calc(-50% + '+y+'px)) rotate(260deg) scale(0)',opacity:0}
+      ],{duration:750+Math.random()*550,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=function(){p.remove();};
+    })(p);
+  }
+}
+
+function fight(){
+  if(G.done){return;}
+  var s=G.pool[G.i],ta=$('#ans');
+  if(!G.sel){hint('Pilih satu Kartu Dalil dulu sebelum melawan situasi.');shake($('#hand'));return;}
+  var text=ta.value.trim();
+  var words=text?text.split(/\s+/).length:0;
+  if(words<3){hint('Tulis penjelasan singkat, minimal 3 kata.');ta.focus();shake(ta);return;}
+
+  G.done=true;
+  var ok=(G.sel===G.right);
+  var n=norm(text),matched=[];
+  s.kunci.forEach(function(k){if(n.indexOf(norm(k).replace(/\s+$/,''))>-1){matched.push(k);}});
+  var bonus=(ok&&matched.length>=2)?1:0;
+  var pts=ok?2+bonus:0;
+  var before=G.score;
+  G.score+=pts;
+  G.log[G.i]={sid:s.id,sel:G.sel,right:G.right,ok:ok,bonus:bonus,pts:pts};
+
+  /* tampilan kartu */
+  document.querySelectorAll('.dcard').forEach(function(b){
+    var id=b.getAttribute('data-id');
+    b.disabled=true;b.classList.remove('sel');b.removeAttribute('data-tag');
+    if(id===G.right){b.classList.add('best');b.setAttribute('data-tag','Dalil tepat');}
+    else if(id===G.sel){b.classList.add('wrong');b.setAttribute('data-tag','Kurang tepat');}
+    else{b.classList.add('dim');}
+  });
+
+  /* efek musuh */
+  var sit=$('#sit'),hp=$('#hp'),stamp=$('#stamp');
+  var left=pts===3?0:(pts===2?25:100);
+  hp.style.width=left+'%';$('#hpTxt').textContent=left+'%';
+  sit.classList.add('over');
+  if(ok){
+    sit.classList.add('won');stamp.textContent=bonus?'Terkalahkan':'Tertangkis';
+    burst(sit,['#f4d983','#d9ad4b','#63d3a0','#f6eed9'],bonus?44:28);
+  }else{
+    stamp.classList.add('bad');stamp.textContent='Serangan Kena';
+    shake(document.querySelector('.dcard.wrong'));shake(sit);
+    burst(document.querySelector('.dcard.wrong'),['#d0613f','#7d2f1c','#ffb9a3'],26);
+  }
+  renderHud();tweenScore(before,G.score);
+
+  var wrap=$('#answerWrap');
+  wrap.innerHTML=resultHTML(s,ok,bonus,pts,matched,text);
+  var res=$('#result');
+  if(res&&res.scrollIntoView){res.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}
+}
+
+function resultHTML(s,ok,bonus,pts,matched,text){
+  var chosen=D[G.sel],right=D[G.right],w=s.why[G.right];
+  var head=ok&&bonus?'Kemenangan Sempurna':(ok?'Situasi Tertangkis':'Perisai Retak');
+  var sub=ok&&bonus?'Dalilmu tepat dan penjelasanmu memuat kata kunci penting.':(ok?'Dalilmu tepat. Perkuat penjelasan dengan kata kunci inti.':'Dalil yang kamu pilih kurang sesuai dengan situasi ini.');
+  var last=(G.i>=G.pool.length-1);
+  var h='<div class="result '+(ok?'win':'lose')+'" id="result" role="status" aria-live="polite" tabindex="-1">';
+  h+='<div class="res-head"><div><div class="res-title">'+head+'</div><div class="res-sub">'+sub+'</div></div><div class="pts">+'+pts+' <small>poin</small></div></div>';
+  h+='<div class="rows">'+
+     '<div class="prow '+(ok?'on':'off')+'"><span>Dalil relevan</span><span class="v">'+(ok?'+2':'0')+'</span></div>'+
+     '<div class="prow '+(bonus?'on':'off')+'"><span>Penjelasan sesuai kata kunci'+(ok?'':' (dinilai bila dalil tepat)')+'</span><span class="v">'+(bonus?'+1':'0')+'</span></div></div>';
+  if(!ok){
+    h+='<div class="blk"><h3>Koreksi</h3><div class="fix">Kartu <b>'+chosen.nama+'</b> ('+chosen.ref.split(' (')[0]+') membahas '+chosen.tema+'. Inti situasi ini adalah '+s.fokus+', sehingga dalil yang paling tepat adalah <b>'+right.ref.split(' (')[0]+'</b> ('+right.nama+').</div></div>';
+  }
+  h+='<div class="blk"><h3>Alasan</h3><p><b>'+right.ref.split(' (')[0]+'</b>: '+w.alasan+'</p></div>';
+  h+='<div class="blk"><h3>Contoh jawaban yang tepat</h3><div class="quote">'+w.contoh+'</div></div>';
+  h+='<div class="blk"><h3>Jawabanmu</h3><div class="mine">'+esc(text)+'</div></div>';
+  h+='<div class="blk"><h3>Kata kunci</h3>';
+  h+='<div class="kwlab">Yang kamu pakai</div><div class="kw">'+(matched.length?matched.map(function(k){return '<span class="hit">'+esc(k)+'</span>';}).join(''):'<span>belum ada</span>')+'</div>';
+  h+='<div class="kwlab" style="margin-top:10px">Kata kunci penting untuk situasi ini</div><div class="kw">'+s.hint.map(function(k){return '<span>'+esc(k)+'</span>';}).join('')+'</div></div>';
+  h+='<div class="row"><span class="pickline">Ronde '+(G.i+1)+' dari '+G.pool.length+' selesai.</span><button type="button" class="btn" data-act="next">'+(last?'Lihat Skor Akhir':'Ronde Berikutnya')+'</button></div>';
+  h+='</div>';
+  return h;
+}
+
+function next(){
+  if(G.i>=G.pool.length-1){showEnd();return;}
+  G.i++;
+  renderRound();
+  window.scrollTo(0,0);
+}
+
+/* ---------- Layar akhir ---------- */
+function showEnd(){
+  var tepat=0,bonus=0;
+  G.log.forEach(function(r){if(r.ok){tepat++;}bonus+=r.bonus;});
+  var sc=G.score,rank,msg;
+  if(sc>=13){rank='Pendekar Dalil';msg='Luar biasa. Kamu menguasai hubungan dalil dengan situasi nyata dan menjelaskannya dengan tepat.';}
+  else if(sc>=9){rank='Penjaga Perisai';msg='Bagus. Pemahamanmu sudah kuat, tinggal merapikan beberapa dalil dan penjelasannya.';}
+  else if(sc>=5){rank='Prajurit Ilmu';msg='Kamu sudah di jalur yang benar. Pelajari kembali kartu yang keliru, lalu coba lagi.';}
+  else{rank='Pemula Perisai';msg='Awal yang baik. Baca ulang makna setiap kartu agar lebih mudah menghubungkannya dengan situasi.';}
+  var ev=['Kamu menangkis <b>'+tepat+' dari 5</b> situasi dengan dalil yang tepat dan mendapat <b>'+bonus+'</b> poin tambahan dari kata kunci.'];
+  if(tepat>bonus){ev.push('Penjelasanmu bisa lebih kuat dengan menyebut isi dalil, lalu sikap nyata yang akan kamu lakukan.');}
+  if(tepat<5){ev.push('Pelajari ulang pasangan dalil pada ronde bertanda silang di bawah ini.');}
+  else{ev.push('Semua dalil yang kamu pilih tepat. Tantang dirimu dengan memperkaya penjelasan.');}
+
+  var rows=G.log.map(function(r,k){
+    var s=SITUASI.filter(function(x){return x.id===r.sid;})[0];
+    var line='Dalil dipilih: '+D[r.sel].nama+' ('+D[r.sel].ref.split(' (')[0]+')';
+    if(!r.ok){line+=' &middot; Dalil tepat: '+D[r.right].nama+' ('+D[r.right].ref.split(' (')[0]+')';}
+    return '<li class="rc '+(r.ok?'ok':'no')+'"><span class="st">'+ic(r.ok?'check':'cross',18)+'</span><div><b>Ronde '+(k+1)+' &middot; '+s.nama+'</b><small>'+line+'</small></div><span class="p">+'+r.pts+'</span></li>';
+  }).join('');
+
+  $('#screenEnd').innerHTML=
+   '<div class="end">'+
+     '<div class="end-card">'+
+       '<div class="eyebrow">Hasil Pertempuran</div>'+
+       '<div class="ring" id="ring"><div><div class="big" id="bigScore">0</div><div class="of">dari 15 poin</div></div></div>'+
+       '<div class="rank">'+rank+'</div>'+
+       '<p style="color:var(--mute);max-width:34ch">'+msg+'</p>'+
+       '<div class="stats"><span>Dalil tepat <b>'+tepat+'/5</b></span><span>Kata kunci <b>'+bonus+'/5</b></span></div>'+
+       '<button type="button" class="btn" data-act="again">Main Lagi</button>'+
+     '</div>'+
+     '<div><div class="sec" style="margin-bottom:14px">Evaluasi singkat</div>'+
+       '<div class="evalbox">'+ev.map(function(t){return '<p>'+t+'</p>';}).join('')+'</div>'+
+       '<div class="sec" style="margin-bottom:14px">Rekap 5 ronde</div>'+
+       '<ul class="recap">'+rows+'</ul>'+
+     '</div>'+
+   '</div>';
+  show('screenEnd');
+  var ring=$('#ring'),big=$('#bigScore'),target=sc/15*100;
+  if(reduce){ring.style.setProperty('--p',target);big.textContent=sc;}
+  else{
+    var t0=performance.now();
+    (function f(t){var k=Math.min(1,(t-t0)/1200),e=1-Math.pow(1-k,3);ring.style.setProperty('--p',(target*e).toFixed(1));big.textContent=Math.round(sc*e);if(k<1){requestAnimationFrame(f);}})(t0);
+  }
+  if(sc>=9){setTimeout(function(){burst(ring,['#f4d983','#d9ad4b','#63d3a0','#f6eed9'],50);},500);}
+}
+
+/* ---------- Event ---------- */
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-act]');
+  if(!el||el.disabled){return;}
+  var a=el.getAttribute('data-act');
+  if(a==='start'||a==='again'){newGame();show('screenGame');renderRound();}
+  else if(a==='pick'){pickCard(el.getAttribute('data-id'));}
+  else if(a==='fight'){fight();}
+  else if(a==='next'){next();}
+});
+
+renderFan();
+})();
+</script>
+
+</body></html>
